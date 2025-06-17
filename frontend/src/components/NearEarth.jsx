@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AnimatedStarfield from "./AnimatedStarfield";
 import {
   BarChart,
   Bar,
@@ -12,105 +13,11 @@ import {
   ScatterChart,
   Scatter,
 } from "recharts";
-import styled from "styled-components";
+// import styled from "styled-components";
 
-const Container = styled.div`
-  padding: 1rem;
-  z-index: 99;
-`;
+const COLORS = ["#64ffda", "#667eea", "#f093fb", "#ffd700", "#ff6b6b"];
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99;
-`;
-
-const ModalContent = styled.div`
-  background: #fff;
-  border-radius: 1rem;
-  padding: 2rem;
-  max-width: 80vw;
-  max-height: 90vh;
-  overflow: auto;
-  z-index: 99;
-`;
-
-const StyledButton = styled.button`
-  background-color: black;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-  &:hover {
-    background-color: #1f1f1f;
-  }
-`;
-
-const Input = styled.input`
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-`;
-
-const InputRow = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-`;
-
-const ChartGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`;
-
-const ChartCard = styled.div`
-  background-color: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const Title = styled.h2`
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-`;
-
-const Header = styled.div`
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-`;
-
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#a4de6c"];
-
-export default function NearEarth() {
+const NearEarth = () => {
   const [open, setOpen] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -160,48 +67,269 @@ export default function NearEarth() {
   };
 
   return (
-    <Container>
-      <StyledButton onClick={() => setOpen(true)}>
-        Explore Near-Earth Objects
-      </StyledButton>
-      {open && (
-        <ModalOverlay>
-          <ModalContent>
-            <CloseButton onClick={() => setOpen(false)}>&times;</CloseButton>
-            <Header>NEO Data Explorer</Header>
+    <div style={{ padding: "1rem", textAlign: "center" }}>
+      <button
+        onClick={() => setOpen(true)}
+        style={{
+          padding: "1rem 2rem",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          color: "#ffffff",
+          fontWeight: "bold",
+          fontSize: "1.1rem",
+          border: "none",
+          borderRadius: "12px",
+          cursor: "pointer",
+          boxShadow: "0 8px 25px rgba(102, 126, 234, 0.3)",
+          transition: "all 0.3s ease",
+          transform: "translateY(0)",
+          fontFamily: "'Inter', 'Arial', sans-serif",
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = "translateY(-2px)";
+          e.target.style.boxShadow = "0 12px 35px rgba(102, 126, 234, 0.4)";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = "translateY(0)";
+          e.target.style.boxShadow = "0 8px 25px rgba(102, 126, 234, 0.3)";
+        }}
+      >
+        🌌 Explore Near-Earth Objects
+      </button>
 
-            <InputRow>
-              <Input
+      {open && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background:
+              "radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 999,
+            overflow: "hidden",
+            fontFamily: "'Inter', 'Arial', sans-serif",
+          }}
+        >
+          <AnimatedStarfield />
+          <div
+            style={{
+              background: "rgba(26, 26, 46, 0.95)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(100, 255, 218, 0.2)",
+              borderRadius: "20px",
+              padding: "2rem",
+              width: "80vw",
+              maxHeight: "90vh",
+              overflow: "auto",
+              position: "relative",
+              boxShadow:
+                "0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+              zIndex: 1,
+            }}
+          >
+            <button
+              onClick={() => setOpen(false)}
+              style={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+                background: "linear-gradient(135deg, #ff6b6b, #ee5a5a)",
+                border: "none",
+                borderRadius: "50%",
+                fontSize: "1.5rem",
+                color: "white",
+                width: "2.5rem",
+                height: "2.5rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 4px 15px rgba(255, 107, 107, 0.4)",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "scale(1.1)";
+                e.target.style.boxShadow =
+                  "0 6px 20px rgba(255, 107, 107, 0.6)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "scale(1)";
+                e.target.style.boxShadow =
+                  "0 4px 15px rgba(255, 107, 107, 0.4)";
+              }}
+            >
+              ×
+            </button>
+
+            <h1
+              style={{
+                background: "linear-gradient(135deg, #64ffda, #1de9b6)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                fontSize: "2rem",
+                fontWeight: "bold",
+                marginBottom: "2rem",
+                textAlign: "center",
+              }}
+            >
+              NEO Data Explorer
+            </h1>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                marginBottom: "2rem",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 placeholder="Start Date"
+                style={{
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(100, 255, 218, 0.3)",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  color: "#ffffff",
+                  fontSize: "1rem",
+                  backdropFilter: "blur(10px)",
+                }}
               />
-              <Input
+              <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 placeholder="End Date"
+                style={{
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(100, 255, 218, 0.3)",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  color: "#ffffff",
+                  fontSize: "1rem",
+                  backdropFilter: "blur(10px)",
+                }}
               />
-              <StyledButton onClick={fetchNEOs}>Fetch Data</StyledButton>
-            </InputRow>
+              <button
+                onClick={fetchNEOs}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  background: "linear-gradient(135deg, #64ffda, #1de9b6)",
+                  border: "none",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  borderRadius: "10px",
+                  color: "#1a1a2e",
+                  fontSize: "1rem",
+                  boxShadow: "0 4px 15px rgba(100, 255, 218, 0.3)",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = "translateY(-1px)";
+                  e.target.style.boxShadow =
+                    "0 6px 20px rgba(100, 255, 218, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow =
+                    "0 4px 15px rgba(100, 255, 218, 0.3)";
+                }}
+              >
+                🔍 Fetch Data
+              </button>
+            </div>
 
             {neoData.length > 0 && (
-              <ChartGrid>
-                <ChartCard>
-                  <Title>Asteroid Sizes (km)</Title>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: "2rem",
+                }}
+                css={`
+                  @media (min-width: 768px) {
+                    grid-template-columns: repeat(2, 1fr);
+                  }
+                `}
+              >
+                <div
+                  style={{
+                    background: "rgba(15, 15, 31, 0.6)",
+                    borderRadius: "15px",
+                    padding: "1.5rem",
+                    border: "1px solid rgba(100, 255, 218, 0.2)",
+                    backdropFilter: "blur(10px)",
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize: "1.25rem",
+                      fontWeight: "600",
+                      marginBottom: "1rem",
+                      color: "#64ffda",
+                      textAlign: "center",
+                    }}
+                  >
+                    🪨 Asteroid Sizes (km)
+                  </h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={processBarData()}>
                       <XAxis dataKey="name" hide />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="diameter" fill="#8884d8" />
+                      <YAxis stroke="#64ffda" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(26, 26, 46, 0.95)",
+                          border: "1px solid rgba(100, 255, 218, 0.3)",
+                          borderRadius: "8px",
+                          color: "#ffffff",
+                        }}
+                      />
+                      <Bar dataKey="diameter" fill="url(#barGradient)" />
+                      <defs>
+                        <linearGradient
+                          id="barGradient"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop offset="0%" stopColor="#64ffda" />
+                          <stop offset="100%" stopColor="#1de9b6" />
+                        </linearGradient>
+                      </defs>
                     </BarChart>
                   </ResponsiveContainer>
-                </ChartCard>
+                </div>
 
-                <ChartCard>
-                  <Title>Hazardous vs Non-Hazardous</Title>
+                <div
+                  style={{
+                    background: "rgba(15, 15, 31, 0.6)",
+                    borderRadius: "15px",
+                    padding: "1.5rem",
+                    border: "1px solid rgba(100, 255, 218, 0.2)",
+                    backdropFilter: "blur(10px)",
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize: "1.25rem",
+                      fontWeight: "600",
+                      marginBottom: "1rem",
+                      color: "#64ffda",
+                      textAlign: "center",
+                    }}
+                  >
+                    ⚠️ Hazardous vs Non-Hazardous
+                  </h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <Pie
@@ -209,6 +337,7 @@ export default function NearEarth() {
                         dataKey="value"
                         outerRadius={100}
                         label
+                        labelLine={false}
                       >
                         {processPieData().map((entry, index) => (
                           <Cell
@@ -217,39 +346,77 @@ export default function NearEarth() {
                           />
                         ))}
                       </Pie>
-                      <Tooltip />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(26, 26, 46, 0.95)",
+                          border: "1px solid rgba(100, 255, 218, 0.3)",
+                          borderRadius: "8px",
+                          color: "#ffffff",
+                        }}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
-                </ChartCard>
+                </div>
 
-                <ChartCard style={{ gridColumn: "span 2" }}>
-                  <Title>Velocity vs Miss Distance</Title>
+                <div
+                  style={{
+                    gridColumn: "span 2",
+                    background: "rgba(15, 15, 31, 0.6)",
+                    borderRadius: "15px",
+                    padding: "1.5rem",
+                    border: "1px solid rgba(100, 255, 218, 0.2)",
+                    backdropFilter: "blur(10px)",
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize: "1.25rem",
+                      fontWeight: "600",
+                      marginBottom: "1rem",
+                      color: "#64ffda",
+                      textAlign: "center",
+                    }}
+                  >
+                    🚀 Velocity vs Miss Distance
+                  </h3>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart>
                       <XAxis
                         type="number"
                         dataKey="velocity"
                         name="Velocity (km/h)"
+                        stroke="#64ffda"
                       />
                       <YAxis
                         type="number"
                         dataKey="distance"
                         name="Miss Distance (km)"
+                        stroke="#64ffda"
                       />
-                      <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+                      <Tooltip
+                        cursor={{ strokeDasharray: "3 3", stroke: "#64ffda" }}
+                        contentStyle={{
+                          backgroundColor: "rgba(26, 26, 46, 0.95)",
+                          border: "1px solid rgba(100, 255, 218, 0.3)",
+                          borderRadius: "8px",
+                          color: "#ffffff",
+                        }}
+                      />
                       <Scatter
                         name="NEOs"
                         data={processScatterData()}
-                        fill="#82ca9d"
+                        fill="#64ffda"
                       />
                     </ScatterChart>
                   </ResponsiveContainer>
-                </ChartCard>
-              </ChartGrid>
+                </div>
+              </div>
             )}
-          </ModalContent>
-        </ModalOverlay>
+          </div>
+        </div>
       )}
-    </Container>
+    </div>
   );
-}
+};
+
+export default NearEarth;

@@ -3,6 +3,7 @@ import EpicNasa from "./components/EpicNasa";
 import FirstPage from "./components/FirstPage";
 import ImageAndVideo from "./components/ImageAndVideo";
 import MarsRoverPhotos from "./components/MarsRoverPhotos";
+import NearEarth from "./components/NearEarth";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <MarsRoverPhotos />
       <EpicNasa />
       <ImageAndVideo />
+      <NearEarth />
     </>
   );
 }

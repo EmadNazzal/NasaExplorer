@@ -1,6 +1,6 @@
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
-
+import { useApod } from "../hooks/useApod";
 const Container = styled.div`
   text-align: center;
   margin: 1rem 0;
@@ -110,28 +110,11 @@ export const ApodNasa = ({ onClick }) => {
 };
 
 export const ApodNasaModal = ({ isOpen, onClose }) => {
-  const [data, setData] = React.useState(null);
-  const [date, setDate] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [date, setDate] = useState("");
 
-  const fetchApod = async () => {
-    if (!date) return;
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/nasa/apod?date=${date}`
-      );
-      const json = await res.json();
-      if (json.code) throw new Error(json.msg || "Failed to fetch");
-      setData(json);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, isLoading, error, refetch, isFetching } = useApod(date, {
+    enabled: false,
+  }); // Fetch manually
 
   if (!isOpen) return null;
 
@@ -140,15 +123,19 @@ export const ApodNasaModal = ({ isOpen, onClose }) => {
       <PopupContent>
         <CloseButton onClick={onClose}>×</CloseButton>
         <h2>Astronomy Picture of the Day</h2>
+
         <DateInput
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
-        <FetchButton onClick={fetchApod}>
-          {loading ? "Loading..." : "Get Picture"}
+
+        <FetchButton onClick={refetch}>
+          {isFetching ? "Loading..." : "Get Picture"}
         </FetchButton>
-        {error && <ErrorText>{error}</ErrorText>}
+
+        {error && <ErrorText>{error.message}</ErrorText>}
+
         {data && (
           <Result>
             <h3>{data.title}</h3>

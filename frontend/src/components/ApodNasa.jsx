@@ -39,6 +39,8 @@ const PopupContent = styled.div`
   max-width: 600px;
   color: #fff;
   position: relative;
+  height: 90%;
+  overflow-y: auto;
 `;
 
 const CloseButton = styled.button`

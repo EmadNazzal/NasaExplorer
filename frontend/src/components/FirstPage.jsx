@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-
+import ApodNasa, { ApodNasaModal } from "./ApodNasa";
+import EpicNasa, { EpicNasaModal } from "./EpicNasa";
+import ImageAndVideo, { ImageAndVideoModal } from "./ImageAndVideo";
+import MarsRoverPhotos, { MarsRoverPhotosModal } from "./MarsRoverPhotos";
+import NearEarth, { NearEarthModal } from "./NearEarth";
 const FirstPage = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [activeModal, setActiveModal] = useState(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -148,10 +153,25 @@ const FirstPage = () => {
                   <span style={styles.cardSubtitle}>{option.subtitle}</span>
                 </div>
                 <p style={styles.cardDescription}>{option.description}</p>
-                <button style={styles.cardButton}>
+                {option.subtitle === "APOD" && (
+                  <ApodNasa onClick={() => setActiveModal("APOD")} />
+                )}
+                {option.subtitle === "MRP" && (
+                  <MarsRoverPhotos onClick={() => setActiveModal("MRP")} />
+                )}
+                {option.subtitle === "EPIC" && (
+                  <EpicNasa onClick={() => setActiveModal("EPIC")} />
+                )}
+                {option.subtitle === "NeoWs" && (
+                  <NearEarth onClick={() => setActiveModal("NeoWs")} />
+                )}
+                {option.subtitle === "NIVL" && (
+                  <ImageAndVideo onClick={() => setActiveModal("NIVL")} />
+                )}
+                {/*
                   <span>EXPLORE</span>
                   <div style={styles.buttonArrow}>→</div>
-                </button>
+                */}
               </div>
 
               <div style={styles.cardBorder}></div>
@@ -172,6 +192,28 @@ const FirstPage = () => {
             <span>Contact</span>
           </div>
         </div>
+
+        {/* Modal Portal */}
+        <ApodNasaModal
+          isOpen={activeModal === "APOD"}
+          onClose={() => setActiveModal(null)}
+        />
+        <MarsRoverPhotosModal
+          isOpen={activeModal === "MRP"}
+          onClose={() => setActiveModal(null)}
+        />
+        <EpicNasaModal
+          isOpen={activeModal === "EPIC"}
+          onClose={() => setActiveModal(null)}
+        />
+        <NearEarthModal
+          isOpen={activeModal === "NeoWs"}
+          onClose={() => setActiveModal(null)}
+        />
+        <ImageAndVideoModal
+          isOpen={activeModal === "NIVL"}
+          onClose={() => setActiveModal(null)}
+        />
       </footer>
     </div>
   );

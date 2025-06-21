@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
 
 const Container = styled.div`
   text-align: center;
-  margin: 2rem auto;
+  margin: 1rem 0;
 `;
 
 const OpenButton = styled.button`
@@ -49,12 +49,6 @@ const Popup = styled.div`
   padding: 1rem;
   overflow-y: auto;
 `;
-const ScrollWrapper = styled.div`
-  flex-grow: 1;
-  overflow-y: auto;
-  margin-top: 1rem;
-  padding-right: 0.5rem;
-`;
 
 const PopupContent = styled.div`
   background: #1a1a2e;
@@ -66,7 +60,14 @@ const PopupContent = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 90vh; /* Must be limited for scroll to apply */
+  height: 90vh;
+`;
+
+const ScrollWrapper = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: 1rem;
+  padding-right: 0.5rem;
 `;
 
 const CloseButton = styled.button`
@@ -146,12 +147,17 @@ const CaptionOverlay = styled.div`
   }
 `;
 
-const EpicNasa = () => {
+const EpicNasa = ({ onClick }) => (
+  <Container>
+    <OpenButton onClick={onClick}>Explore EPIC Data</OpenButton>
+  </Container>
+);
+
+export const EpicNasaModal = ({ isOpen, onClose }) => {
   const [photos, setPhotos] = useState([]);
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
 
   const fetchPhotos = async () => {
     setLoading(true);
@@ -171,46 +177,44 @@ const EpicNasa = () => {
     }
   };
 
-  return (
-    <Container>
-      <GlobalStyle />
+  if (!isOpen) return null;
 
-      <OpenButton onClick={() => setOpen(true)}>Explore EPIC Data</OpenButton>
-      {open && (
-        <Popup>
-          <PopupContent>
-            <CloseButton onClick={() => setOpen(false)}>×</CloseButton>
-            <h2>Earth Polychromatic Imaging Camera</h2>
-            <FormGroup>
-              <Input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-              <FetchButton onClick={fetchPhotos}>
-                {loading ? "Loading..." : "Get Images"}
-              </FetchButton>
-            </FormGroup>
-            {error && <ErrorText>{error}</ErrorText>}
-            <ScrollWrapper>
-              <PhotosGrid>
-                {photos.map((item, index) => (
-                  <PhotoCard key={index}>
-                    <Image
-                      src={`https://epic.gsfc.nasa.gov/archive/natural/${item.date
-                        .split(" ")[0]
-                        .replaceAll("-", "/")}/png/${item.image}.png`}
-                      alt={item.caption}
-                    />
-                    <CaptionOverlay>{item.caption}</CaptionOverlay>
-                  </PhotoCard>
-                ))}
-              </PhotosGrid>
-            </ScrollWrapper>
-          </PopupContent>
-        </Popup>
-      )}
-    </Container>
+  return (
+    <>
+      <GlobalStyle />
+      <Popup>
+        <PopupContent>
+          <CloseButton onClick={onClose}>×</CloseButton>
+          <h2>Earth Polychromatic Imaging Camera</h2>
+          <FormGroup>
+            <Input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <FetchButton onClick={fetchPhotos}>
+              {loading ? "Loading..." : "Get Images"}
+            </FetchButton>
+          </FormGroup>
+          {error && <ErrorText>{error}</ErrorText>}
+          <ScrollWrapper>
+            <PhotosGrid>
+              {photos.map((item, index) => (
+                <PhotoCard key={index}>
+                  <Image
+                    src={`https://epic.gsfc.nasa.gov/archive/natural/${item.date
+                      .split(" ")[0]
+                      .replaceAll("-", "/")}/png/${item.image}.png`}
+                    alt={item.caption}
+                  />
+                  <CaptionOverlay>{item.caption}</CaptionOverlay>
+                </PhotoCard>
+              ))}
+            </PhotosGrid>
+          </ScrollWrapper>
+        </PopupContent>
+      </Popup>
+    </>
   );
 };
 

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
   text-align: center;
-  margin: 2rem auto;
+  margin: 1rem 0;
 `;
 
 const OpenButton = styled.button`
@@ -101,12 +101,19 @@ const Explanation = styled.p`
   color: #ddd;
 `;
 
-const ApodNasa = () => {
-  const [data, setData] = useState(null);
-  const [date, setDate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
+export const ApodNasa = ({ onClick }) => {
+  return (
+    <Container>
+      <OpenButton onClick={onClick}>Explore APOD</OpenButton>
+    </Container>
+  );
+};
+
+export const ApodNasaModal = ({ isOpen, onClose }) => {
+  const [data, setData] = React.useState(null);
+  const [date, setDate] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
 
   const fetchApod = async () => {
     if (!date) return;
@@ -126,44 +133,41 @@ const ApodNasa = () => {
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <Container>
-      <OpenButton onClick={() => setOpen(true)}>Explore APOD</OpenButton>
-      {open && (
-        <Popup>
-          <PopupContent>
-            <CloseButton onClick={() => setOpen(false)}>×</CloseButton>
-            <h2>Astronomy Picture of the Day</h2>
-            <DateInput
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <FetchButton onClick={fetchApod}>
-              {loading ? "Loading..." : "Get Picture"}
-            </FetchButton>
-            {error && <ErrorText>{error}</ErrorText>}
-            {data && (
-              <Result>
-                <h3>{data.title}</h3>
-                <p>{data.date}</p>
-                {data.media_type === "image" ? (
-                  <Image src={data.url} alt={data.title} />
-                ) : (
-                  <Video
-                    src={data.url}
-                    title={data.title}
-                    frameBorder="0"
-                    allowFullScreen
-                  />
-                )}
-                <Explanation>{data.explanation}</Explanation>
-              </Result>
+    <Popup>
+      <PopupContent>
+        <CloseButton onClick={onClose}>×</CloseButton>
+        <h2>Astronomy Picture of the Day</h2>
+        <DateInput
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <FetchButton onClick={fetchApod}>
+          {loading ? "Loading..." : "Get Picture"}
+        </FetchButton>
+        {error && <ErrorText>{error}</ErrorText>}
+        {data && (
+          <Result>
+            <h3>{data.title}</h3>
+            <p>{data.date}</p>
+            {data.media_type === "image" ? (
+              <Image src={data.url} alt={data.title} />
+            ) : (
+              <Video
+                src={data.url}
+                title={data.title}
+                frameBorder="0"
+                allowFullScreen
+              />
             )}
-          </PopupContent>
-        </Popup>
-      )}
-    </Container>
+            <Explanation>{data.explanation}</Explanation>
+          </Result>
+        )}
+      </PopupContent>
+    </Popup>
   );
 };
 

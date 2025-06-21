@@ -9,11 +9,11 @@ function App() {
   return (
     <>
       <FirstPage />
-      <ApodNasa />
+      {/* <ApodNasa />
       <MarsRoverPhotos />
       <EpicNasa />
       <ImageAndVideo />
-      <NearEarth />
+      <NearEarth /> */}
     </>
   );
 }

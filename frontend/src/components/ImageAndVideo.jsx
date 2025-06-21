@@ -23,7 +23,93 @@ const ImageAndVideo = ({ onClick }) => (
     <OpenButton onClick={onClick}>Explore NASA Media Library</OpenButton>
   </Container>
 );
+const Popup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 1rem;
+  overflow: hidden;
+`;
 
+const PopupContent = styled.div`
+  background: #1a1a2e;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
+  color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+`;
+
+const ScrollWrapper = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: 1rem;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ff5050;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: center;
+`;
+
+const Input = styled.input`
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 300px;
+`;
+
+const Button = styled.button`
+  padding: 0.5rem 1rem;
+  background: #d38312;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+`;
+
+const MediaCard = styled.div`
+  background: #0f0f1f;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  text-align: left;
+`;
+
+const Thumbnail = styled.img`
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+`;
 export const ImageAndVideoModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);

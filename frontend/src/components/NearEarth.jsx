@@ -25,16 +25,15 @@ const NearEarth = ({ onClick }) => (
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         color: "#ffffff",
         fontWeight: "bold",
-        fontSize: "1.1rem",
         border: "none",
-        borderRadius: "12px",
+        borderRadius: "10px",
         cursor: "pointer",
         boxShadow: "0 8px 25px rgba(102, 126, 234, 0.3)",
         transition: "all 0.3s ease",
         fontFamily: "'Inter', 'Arial', sans-serif",
       }}
     >
-      🌌 Explore Near-Earth Objects
+      Explore Near-Earth Objects
     </button>
   </div>
 );

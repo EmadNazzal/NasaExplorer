@@ -185,11 +185,41 @@ const FirstPage = () => {
         <div style={styles.footerContent}>
           <p>Powered by NASA Open Data Portal</p>
           <div style={styles.footerLinks}>
-            <span>About</span>
+            <a
+              href="https://github.com/EmadNazzal/NasaExplorer/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
+              About
+            </a>
             <span>•</span>
-            <span>API Documentation</span>
+            <a
+              href="https://api.nasa.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
+              API Documentation
+            </a>
             <span>•</span>
-            <span>Contact</span>
+            <a
+              href="https://emadnazzal.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
+              Contact
+            </a>
           </div>
         </div>
 

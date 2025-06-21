@@ -8,8 +8,8 @@ const Container = styled.div`
 
 const OpenButton = styled.button`
   padding: 1rem 2rem;
-  background: linear-gradient(45deg, #00ffff, #0080ff);
-  color: black;
+  background: linear-gradient(45deg, #d38312, #a83279);
+  color: white;
   font-weight: bold;
   border: none;
   border-radius: 10px;

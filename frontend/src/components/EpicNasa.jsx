@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
-const GlobalStyle = createGlobalStyle`
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
+// const GlobalStyle = createGlobalStyle`
+//   ::-webkit-scrollbar {
+//     width: 10px;
+//   }
 
-  ::-webkit-scrollbar-track {
-    background: #1a1a2e;
-  }
+//   ::-webkit-scrollbar-track {
+//     background: #1a1a2e;
+//   }
 
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, rgb(255, 107, 107), rgb(255, 217, 61), rgb(107, 207, 127), rgb(78, 205, 196), rgb(69, 183, 209));
-    border-radius: 6px;
-  }
+//   ::-webkit-scrollbar-thumb {
+//     background: linear-gradient(45deg, rgb(255, 107, 107), rgb(255, 217, 61), rgb(107, 207, 127), rgb(78, 205, 196), rgb(69, 183, 209));
+//     border-radius: 6px;
+//   }
 
-  ::-webkit-scrollbar-thumb:hover {
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-  }
-`;
+//   ::-webkit-scrollbar-thumb:hover {
+//     box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+//   }
+// `;
 
 const Container = styled.div`
   text-align: center;
@@ -27,7 +27,7 @@ const Container = styled.div`
 
 const OpenButton = styled.button`
   padding: 1rem 2rem;
-  background: linear-gradient(45deg, #4facfe, #00f2fe);
+  background: linear-gradient(45deg, #d38312, #a83279);
   color: white;
   font-weight: bold;
   border: none;
@@ -181,7 +181,6 @@ export const EpicNasaModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <GlobalStyle />
       <Popup>
         <PopupContent>
           <CloseButton onClick={onClose}>×</CloseButton>

@@ -458,6 +458,7 @@ export const ImageAndVideoModal = ({ isOpen, onClose }) => {
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState("");
   const [assetUrls, setAssetUrls] = useState([]);
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   const searchParams = useMemo(() => {
     const params = {};
@@ -487,7 +488,9 @@ export const ImageAndVideoModal = ({ isOpen, onClose }) => {
     isFetching,
     refetch,
     error: searchError,
-  } = useNasaSearch(searchParams, { enabled: false }); // Pass the object here
+  } = useNasaSearch(searchParams, {
+    enabled: shouldFetch && !!searchQuery,
+  });
 
   console.log("isFetching:", isFetching);
   console.log("searchError:", searchError);
@@ -496,9 +499,23 @@ export const ImageAndVideoModal = ({ isOpen, onClose }) => {
   const handleSearch = () => {
     setCurrentPage(1);
     if (searchQuery) {
-      refetch();
+      setShouldFetch(true);
     }
   };
+
+  useEffect(() => {
+    if (shouldFetch) {
+      refetch();
+    }
+  }, [shouldFetch, refetch]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setShouldFetch(false);
+      setSearchQuery("");
+      setCurrentPage(1);
+    }
+  }, [isOpen]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -573,11 +590,9 @@ export const ImageAndVideoModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const results = searchResults?.collection?.items || [];
-  const totalHits = searchResults?.collection?.metadata?.total_hits || 0;
-  const hasNextPage = searchResults?.collection?.links?.find(
-    (link) => link.rel === "next"
-  );
+  const results = searchResults?.items || [];
+  const totalHits = searchResults?.metadata?.total_hits || 0;
+  const hasNextPage = searchResults?.links?.some((link) => link.rel === "next");
 
   return (
     <Popup>

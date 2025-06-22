@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require("axios");
 const API_KEY = process.env.NASA_API_KEY;
 
 exports.fetchAPOD = async () => {
@@ -25,8 +25,26 @@ exports.fetchNEOFeed = async (start_date, end_date) => {
   return response.data;
 };
 
-exports.searchImageLibrary = async (q) => {
-  const url = `https://images-api.nasa.gov/search?q=${encodeURIComponent(q)}`;
+exports.searchImageLibrary = async (params) => {
+  // Now accepts an object of parameters
+  // Filter out empty string parameters before sending to NASA API (good practice)
+  const filteredParams = {};
+  for (const key in params) {
+    if (
+      params[key] !== null &&
+      params[key] !== undefined &&
+      String(params[key]).trim() !== ""
+    ) {
+      filteredParams[key] = params[key];
+    }
+  }
+
+  // Construct the URL query string from the filtered parameters
+  const queryString = new URLSearchParams(filteredParams).toString();
+  const url = `https://images-api.nasa.gov/search?${queryString}`;
+
+  console.log("Backend calling NASA API with URL:", url); // For debugging
+
   const response = await axios.get(url);
   return response.data;
 };

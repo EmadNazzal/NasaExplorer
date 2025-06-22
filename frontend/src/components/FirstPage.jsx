@@ -240,10 +240,12 @@ const FirstPage = () => {
           isOpen={activeModal === "NeoWs"}
           onClose={() => setActiveModal(null)}
         />
-        <ImageAndVideoModal
-          isOpen={activeModal === "NIVL"}
-          onClose={() => setActiveModal(null)}
-        />
+        {activeModal === "NIVL" && (
+          <ImageAndVideoModal
+            isOpen={true}
+            onClose={() => setActiveModal(null)}
+          />
+        )}
       </footer>
     </div>
   );

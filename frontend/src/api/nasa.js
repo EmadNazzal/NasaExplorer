@@ -20,10 +20,27 @@ export const fetchEpicImages = async (date = "") => {
 
 //Image and Video API
 
-export const searchNasaMedia = async (query) => {
-  const res = await fetch(`http://localhost:5000/api/nasa/search?q=${query}`);
+export const searchNasaMedia = async (params) => {
+  // Construct the query string from the params object (e.g., { q: "apollo", media_type: "image" })
+  const queryParams = new URLSearchParams(params).toString();
+
+  // Call your backend endpoint with all the query parameters
+  const res = await fetch(`${BASE_URL}/api/nasa/search?${queryParams}`);
+
+  if (!res.ok) {
+    // Handle HTTP errors from your backend (e.g., 400, 500)
+    const errorData = await res.json();
+    throw new Error(errorData.message || `API error: ${res.status}`);
+  }
+
   const json = await res.json();
-  return json.collection.items || [];
+
+  // *** THIS IS THE CRITICAL CHANGE ***
+  // Return the entire collection object, as it contains items, metadata, and links
+  // This ensures searchResults in ImageAndVideo.jsx has the .collection structure you're expecting
+  return (
+    json.collection || { items: [], metadata: { total_hits: 0 }, links: [] }
+  );
 };
 
 export const fetchNasaAsset = async (nasa_id) => {

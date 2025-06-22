@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useEpic } from "../hooks/useEpic";
 
 // const GlobalStyle = createGlobalStyle`
 //   ::-webkit-scrollbar {
@@ -147,73 +148,59 @@ const CaptionOverlay = styled.div`
   }
 `;
 
-const EpicNasa = ({ onClick }) => (
+export const EpicNasa = ({ onClick }) => (
   <Container>
     <OpenButton onClick={onClick}>Explore EPIC Data</OpenButton>
   </Container>
 );
 
 export const EpicNasaModal = ({ isOpen, onClose }) => {
-  const [photos, setPhotos] = useState([]);
   const [date, setDate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const fetchPhotos = async () => {
-    setLoading(true);
-    setError("");
-    setPhotos([]);
-    try {
-      const endpoint = date
-        ? `http://localhost:5000/api/nasa/epic?date=${date}`
-        : "http://localhost:5000/api/nasa/epic";
-      const res = await fetch(endpoint);
-      const json = await res.json();
-      setPhotos(json || []);
-    } catch (err) {
-      setError(err.message, "Failed to fetch EPIC images");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data: photos,
+    error,
+    isFetching,
+    refetch,
+  } = useEpic(date, { enabled: false });
 
   if (!isOpen) return null;
 
   return (
-    <>
-      <Popup>
-        <PopupContent>
-          <CloseButton onClick={onClose}>×</CloseButton>
-          <h2>Earth Polychromatic Imaging Camera</h2>
-          <FormGroup>
-            <Input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <FetchButton onClick={fetchPhotos}>
-              {loading ? "Loading..." : "Get Images"}
-            </FetchButton>
-          </FormGroup>
-          {error && <ErrorText>{error}</ErrorText>}
-          <ScrollWrapper>
-            <PhotosGrid>
-              {photos.map((item, index) => (
-                <PhotoCard key={index}>
-                  <Image
-                    src={`https://epic.gsfc.nasa.gov/archive/natural/${item.date
-                      .split(" ")[0]
-                      .replaceAll("-", "/")}/png/${item.image}.png`}
-                    alt={item.caption}
-                  />
-                  <CaptionOverlay>{item.caption}</CaptionOverlay>
-                </PhotoCard>
-              ))}
-            </PhotosGrid>
-          </ScrollWrapper>
-        </PopupContent>
-      </Popup>
-    </>
+    <Popup>
+      <PopupContent>
+        <CloseButton onClick={onClose}>×</CloseButton>
+        <h2>Earth Polychromatic Imaging Camera</h2>
+        <FormGroup>
+          <Input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <FetchButton onClick={refetch}>
+            {isFetching ? "Loading..." : "Get Images"}
+          </FetchButton>
+        </FormGroup>
+
+        {error && <ErrorText>{error.message}</ErrorText>}
+
+        <ScrollWrapper>
+          <PhotosGrid>
+            {(photos || []).map((item, index) => (
+              <PhotoCard key={index}>
+                <Image
+                  src={`https://epic.gsfc.nasa.gov/archive/natural/${item.date
+                    .split(" ")[0]
+                    .replaceAll("-", "/")}/png/${item.image}.png`}
+                  alt={item.caption}
+                />
+                <CaptionOverlay>{item.caption}</CaptionOverlay>
+              </PhotoCard>
+            ))}
+          </PhotosGrid>
+        </ScrollWrapper>
+      </PopupContent>
+    </Popup>
   );
 };
 

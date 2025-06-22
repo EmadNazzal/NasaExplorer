@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AnimatedStarfield from "./AnimatedStarfield";
+import { useMarsRoverPhotos } from "../hooks/useMarsRoverPhotos";
 
 const MarsRoverPhotos = ({ onClick }) => (
   <div style={{ textAlign: "center", margin: "1rem 0" }}>
@@ -31,45 +32,27 @@ const MarsRoverPhotos = ({ onClick }) => (
 );
 
 export const MarsRoverPhotosModal = ({ isOpen, onClose }) => {
-  const [photos, setPhotos] = useState([]);
   const [sol, setSol] = useState("1000");
   const [camera, setCamera] = useState("");
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  const {
+    data: photos = [],
+    error,
+    isFetching,
+    refetch,
+  } = useMarsRoverPhotos({ sol, page, camera }, { enabled: false });
+
+  useEffect(() => {
+    if (isOpen) {
+      refetch();
+    }
+  }, [isOpen, sol, camera, page]);
 
   if (!isOpen) return null;
 
-  const fetchPhotos = async (targetPage = page) => {
-    setLoading(true);
-    setError("");
-    setPhotos([]);
-    try {
-      let query = `sol=${sol}&page=${targetPage}`;
-      if (camera) query += `&camera=${camera}`;
-      const res = await fetch(
-        `http://localhost:5000/api/nasa/mars-rover?${query}`
-      );
-      const json = await res.json();
-      setPhotos(json.photos || []);
-    } catch (err) {
-      setError(err.message || "Failed to fetch photos");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleNext = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchPhotos(nextPage);
-  };
-
-  const handlePrev = () => {
-    const prevPage = Math.max(page - 1, 1);
-    setPage(prevPage);
-    fetchPhotos(prevPage);
-  };
+  const handleNext = () => setPage((prev) => prev + 1);
+  const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
 
   return (
     <div
@@ -151,62 +134,29 @@ export const MarsRoverPhotosModal = ({ isOpen, onClose }) => {
             value={sol}
             onChange={(e) => setSol(e.target.value)}
             placeholder="Sol (e.g. 1000)"
-            style={{
-              padding: "0.75rem",
-              borderRadius: "10px",
-              border: "1px solid rgba(100, 255, 218, 0.3)",
-              background: "rgba(255, 255, 255, 0.1)",
-              color: "#ffffff",
-              fontSize: "1rem",
-              backdropFilter: "blur(10px)",
-            }}
+            style={inputStyle}
           />
           <input
             type="text"
             value={camera}
             onChange={(e) => setCamera(e.target.value)}
             placeholder="Camera (optional)"
-            style={{
-              padding: "0.75rem",
-              borderRadius: "10px",
-              border: "1px solid rgba(100, 255, 218, 0.3)",
-              background: "rgba(255, 255, 255, 0.1)",
-              color: "#ffffff",
-              fontSize: "1rem",
-              backdropFilter: "blur(10px)",
-            }}
+            style={inputStyle}
           />
           <button
             onClick={() => {
               setPage(1);
-              fetchPhotos(1);
+              refetch();
             }}
-            style={{
-              padding: "0.75rem 1.5rem",
-              background: "linear-gradient(135deg, #64ffda, #1de9b6)",
-              border: "none",
-              fontWeight: "bold",
-              cursor: "pointer",
-              borderRadius: "10px",
-              color: "#1a1a2e",
-              fontSize: "1rem",
-              boxShadow: "0 4px 15px rgba(100, 255, 218, 0.3)",
-              transition: "all 0.3s ease",
-            }}
+            style={buttonStyle}
           >
-            {loading ? "Loading..." : "🔍 Get Photos"}
+            {isFetching ? "Loading..." : "🔍 Get Photos"}
           </button>
         </div>
 
         {error && (
-          <p
-            style={{
-              color: "#ff6b6b",
-              marginTop: "1rem",
-              textAlign: "center",
-            }}
-          >
-            {error}
+          <p style={{ color: "#ff6b6b", textAlign: "center" }}>
+            {error.message}
           </p>
         )}
 
@@ -219,15 +169,7 @@ export const MarsRoverPhotosModal = ({ isOpen, onClose }) => {
           }}
         >
           {photos.map((photo) => (
-            <div
-              key={photo.id}
-              style={{
-                background: "rgba(15, 15, 31, 0.8)",
-                padding: "0.75rem",
-                borderRadius: "15px",
-                border: "1px solid rgba(100, 255, 218, 0.1)",
-              }}
-            >
+            <div key={photo.id} style={photoCardStyle}>
               <img
                 src={photo.img_src}
                 alt={photo.id}
@@ -252,57 +194,16 @@ export const MarsRoverPhotosModal = ({ isOpen, onClose }) => {
         </div>
 
         {photos.length > 0 && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "1.5rem",
-              gap: "1rem",
-              alignItems: "center",
-            }}
-          >
+          <div style={paginationStyle}>
             <button
               onClick={handlePrev}
               disabled={page === 1}
-              style={{
-                background:
-                  page === 1
-                    ? "rgba(255, 255, 255, 0.1)"
-                    : "rgba(100, 255, 218, 0.2)",
-                color: page === 1 ? "#666" : "#64ffda",
-                border: "1px solid rgba(100, 255, 218, 0.3)",
-                padding: "0.5rem 1rem",
-                borderRadius: "8px",
-                cursor: page === 1 ? "not-allowed" : "pointer",
-                fontWeight: "bold",
-              }}
+              style={paginationButtonStyle(page === 1)}
             >
               ← Previous
             </button>
-            <span
-              style={{
-                color: "#64ffda",
-                fontWeight: "bold",
-                padding: "0.5rem 1rem",
-                background: "rgba(100, 255, 218, 0.1)",
-                borderRadius: "8px",
-                border: "1px solid rgba(100, 255, 218, 0.2)",
-              }}
-            >
-              Page {page}
-            </span>
-            <button
-              onClick={handleNext}
-              style={{
-                background: "rgba(100, 255, 218, 0.2)",
-                color: "#64ffda",
-                border: "1px solid rgba(100, 255, 218, 0.3)",
-                padding: "0.5rem 1rem",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
+            <span style={pageIndicatorStyle}>Page {page}</span>
+            <button onClick={handleNext} style={paginationButtonStyle(false)}>
               Next →
             </button>
           </div>
@@ -310,6 +211,65 @@ export const MarsRoverPhotosModal = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
+};
+
+const inputStyle = {
+  padding: "0.75rem",
+  borderRadius: "10px",
+  border: "1px solid rgba(100, 255, 218, 0.3)",
+  background: "rgba(255, 255, 255, 0.1)",
+  color: "#ffffff",
+  fontSize: "1rem",
+  backdropFilter: "blur(10px)",
+};
+
+const buttonStyle = {
+  padding: "0.75rem 1.5rem",
+  background: "linear-gradient(135deg, #64ffda, #1de9b6)",
+  border: "none",
+  fontWeight: "bold",
+  cursor: "pointer",
+  borderRadius: "10px",
+  color: "#1a1a2e",
+  fontSize: "1rem",
+  boxShadow: "0 4px 15px rgba(100, 255, 218, 0.3)",
+  transition: "all 0.3s ease",
+};
+
+const photoCardStyle = {
+  background: "rgba(15, 15, 31, 0.8)",
+  padding: "0.75rem",
+  borderRadius: "15px",
+  border: "1px solid rgba(100, 255, 218, 0.1)",
+};
+
+const paginationStyle = {
+  display: "flex",
+  justifyContent: "center",
+  marginTop: "1.5rem",
+  gap: "1rem",
+  alignItems: "center",
+};
+
+const paginationButtonStyle = (disabled) => ({
+  background: disabled
+    ? "rgba(255, 255, 255, 0.1)"
+    : "rgba(100, 255, 218, 0.2)",
+  color: disabled ? "#666" : "#64ffda",
+  border: "1px solid rgba(100, 255, 218, 0.3)",
+  padding: "0.5rem 1rem",
+  borderRadius: "8px",
+  cursor: disabled ? "not-allowed" : "pointer",
+  fontWeight: "bold",
+});
+
+const pageIndicatorStyle = {
+  color: "#64ffda",
+  fontWeight: "bold",
+  padding: "0.5rem 1rem",
+  background: "rgba(100, 255, 218, 0.1)",
+  borderRadius: "8px",
+  border: "1px solid rgba(100, 255, 218, 0.2)",
 };
 
 export default MarsRoverPhotos;

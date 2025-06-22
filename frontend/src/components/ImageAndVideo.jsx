@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNasaSearch } from "../hooks/useNasaSearch";
+import {
+  fetchNasaAsset,
+  fetchNasaMetadata,
+  fetchNasaCaptions,
+} from "../api/nasa";
 
 // Styled Components
 const Container = styled.div`
@@ -112,31 +118,24 @@ const Thumbnail = styled.img`
 `;
 export const ImageAndVideoModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [asset, setAsset] = useState(null);
   const [metadata, setMetadata] = useState(null);
   const [captions, setCaptions] = useState(null);
+  const [error, setError] = useState("");
+
+  const {
+    data: results = [],
+    isFetching,
+    refetch,
+  } = useNasaSearch(query, { enabled: false });
 
   if (!isOpen) return null;
 
-  const handleSearch = async () => {
-    setLoading(true);
+  const handleSearch = () => {
+    if (!query) return;
     setError("");
-    setResults([]);
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/nasa/search?q=${query}`
-      );
-      const data = await res.json();
-      setResults(data.collection.items || []);
-    } catch (err) {
-      setError(err.message || "Search failed");
-    } finally {
-      setLoading(false);
-    }
+    refetch().catch((err) => setError(err.message || "Failed to search media"));
   };
 
   const fetchDetails = async (nasa_id) => {
@@ -145,25 +144,16 @@ export const ImageAndVideoModal = ({ isOpen, onClose }) => {
     setMetadata(null);
     setCaptions(null);
     try {
-      const assetRes = await fetch(
-        `http://localhost:5000/api/nasa/asset/${nasa_id}`
-      );
-      const assetData = await assetRes.json();
+      const [assetData, metadataData, captionsData] = await Promise.all([
+        fetchNasaAsset(nasa_id),
+        fetchNasaMetadata(nasa_id),
+        fetchNasaCaptions(nasa_id),
+      ]);
       setAsset(assetData);
-
-      const metadataRes = await fetch(
-        `http://localhost:5000/api/nasa/metadata/${nasa_id}`
-      );
-      const metadataData = await metadataRes.json();
       setMetadata(metadataData);
-
-      const captionsRes = await fetch(
-        `http://localhost:5000/api/nasa/captions/${nasa_id}`
-      );
-      const captionsData = await captionsRes.json();
       setCaptions(captionsData);
     } catch (err) {
-      setError(err.message || "Failed to retrieve asset details");
+      setError(err.message || "Failed to fetch asset details");
     }
   };
 
@@ -179,7 +169,7 @@ export const ImageAndVideoModal = ({ isOpen, onClose }) => {
             placeholder="Search NASA media..."
           />
           <Button onClick={handleSearch}>
-            {loading ? "Searching..." : "Search"}
+            {isFetching ? "Searching..." : "Search"}
           </Button>
         </FormGroup>
         {error && <p style={{ color: "#ff5050" }}>{error}</p>}

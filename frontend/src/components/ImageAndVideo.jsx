@@ -14,9 +14,9 @@ const OpenButton = styled.button`
   color: white;
   font-weight: bold;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
+
   transition: all 0.3s ease;
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 
@@ -441,7 +441,7 @@ const NoResults = styled.div`
 // Main component
 const ImageAndVideo = ({ onClick }) => (
   <Container>
-    <OpenButton onClick={onClick}>🚀 Explore NASA Media Library</OpenButton>
+    <OpenButton onClick={onClick}> Explore NASA Media Library</OpenButton>
   </Container>
 );
 

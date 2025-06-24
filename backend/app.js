@@ -9,6 +9,8 @@ const app = express();
 const allowedOrigins = [
   "https://nasa-explorer-client-1zdtntrzn-emadnazzals-projects.vercel.app",
   "https://nasa-explorer-client-xi.vercel.app",
+  "https://nasa-explorer-client-git-master-emadnazzals-projects.vercel.app",
+  "https://nasa-explorer-client-emadnazzals-projects.vercel.app",
 ];
 
 // Use CORS middleware with dynamic origin checking

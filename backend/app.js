@@ -8,6 +8,7 @@ const app = express();
 // ✅ Set allowed frontend origin explicitly
 const allowedOrigins = [
   "https://nasa-explorer-client-1zdtntrzn-emadnazzals-projects.vercel.app",
+  "https://nasa-explorer-client-xi.vercel.app",
 ];
 
 app.use(

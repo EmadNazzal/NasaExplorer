@@ -8,16 +8,22 @@ A comprehensive web application that utilizes NASA's Open APIs to showcase space
 ![Application Homepage](./frontend/public/homepage.png)
 *Main dashboard showing the NASA Explorer interface*
 
+![Application Phone Homepage](./frontend/public/phoneview.gif)
+*Main dashboard showing the NASA Explorer interface on a phone/tablet*
+
 ### Key Features Demo
-![Feature Demo GIF](./assets/demo/feature-demo.gif)
-*Interactive demonstration of key application features*
+![Feature Demo GIF](./frontend/public/nasaGroqAI.png)
+*Interactive LLM model fully integrated using Groq free API that leverages Ilama, o3, 2.5 flash*
+
+![Feature Demo GIF](./frontend/public/ImageAndVideo.gif)
+*Full Image, Video and Audio search capabilities*
 
 ### Data Visualizations
-![APOD Feature](./assets/screenshots/apod-feature.png)
+![APOD Feature](./frontend/public/apod.png)
 *Astronomy Picture of the Day feature*
 
-![Mars Rover Photos](./assets/screenshots/mars-rover.png)
-*Mars Rover photo gallery with filtering*
+![Earth Polychromatic Imaging Camera](./frontend/public/Epic.png)
+*Earth Polychromatic Imaging Camera*
 
 ![Near Earth Objects](./frontend/public/nearEarth.gif)
 *Near Earth Objects data visualization*

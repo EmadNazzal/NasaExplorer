@@ -11,6 +11,8 @@ const allowedOrigins = [
   "https://nasa-explorer-client-xi.vercel.app",
   "https://nasa-explorer-client-git-master-emadnazzals-projects.vercel.app",
   "https://nasa-explorer-client-emadnazzals-projects.vercel.app",
+  "http://localhost:5173", // Vite dev server
+  "http://localhost:3000", // if testing API directly
 ];
 
 // Use CORS middleware with dynamic origin checking

@@ -5,7 +5,7 @@ A comprehensive web application that utilizes NASA's Open APIs to showcase space
 ## 📸 Screenshots & Demo
 
 ### Application Overview
-![Application Homepage](./assets/screenshots/homepage.png)
+![Application Homepage](./frontend/public/homepage.png)
 *Main dashboard showing the NASA Explorer interface*
 
 ### Key Features Demo

@@ -8,5 +8,6 @@ const serverless = require("serverless-http");
 // app.listen(PORT, () => {
 //   console.log(`NASA Backend running on port ${PORT}`);
 // });
+console.log("✅ NASA Express Server is loaded and ready!");
 
 module.exports = serverless(app);

@@ -4,18 +4,20 @@ import EpicNasa, { EpicNasaModal } from "./EpicNasa";
 import ImageAndVideo, { ImageAndVideoModal } from "./ImageAndVideo";
 import MarsRoverPhotos, { MarsRoverPhotosModal } from "./MarsRoverPhotos";
 import NearEarth, { NearEarthModal } from "./NearEarth";
+import GroqAI from "./GroqAI";
+
 const FirstPage = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [activeModal, setActiveModal] = useState(null);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
+  // useEffect(() => {
+  //   const handleMouseMove = (e) => {
+  //     setMousePos({ x: e.clientX, y: e.clientY });
+  //   };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  //   window.addEventListener("mousemove", handleMouseMove);
+  //   return () => window.removeEventListener("mousemove", handleMouseMove);
+  // }, []);
 
   const apiOptions = [
     {
@@ -59,14 +61,7 @@ const FirstPage = () => {
   return (
     <div style={styles.container}>
       {/* Animated Background */}
-      <div
-        style={{
-          ...styles.starField,
-          transform: `translate(${mousePos.x * 0.01}px, ${
-            mousePos.y * 0.01
-          }px)`,
-        }}
-      >
+      <div style={styles.starField}>
         {[...Array(100)].map((_, i) => (
           <div
             key={i}
@@ -247,6 +242,7 @@ const FirstPage = () => {
           />
         )}
       </footer>
+      <GroqAI />
     </div>
   );
 };

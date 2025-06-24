@@ -5,7 +5,7 @@ import ImageAndVideo from "./components/ImageAndVideo";
 import MarsRoverPhotos from "./components/MarsRoverPhotos";
 import NearEarth from "./components/NearEarth";
 import { createGlobalStyle } from "styled-components";
-
+import GroqAI from "./components/GroqAI";
 const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 10px;
@@ -31,6 +31,7 @@ function App() {
       <GlobalStyle />
 
       <FirstPage />
+      <GroqAI />
       {/* <ApodNasa />
       <MarsRoverPhotos />
       <EpicNasa />

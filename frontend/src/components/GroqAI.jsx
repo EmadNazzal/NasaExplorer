@@ -16,6 +16,7 @@ const GroqAI = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const [shouldFocusInput, setShouldFocusInput] = useState(false);
 
   const { conversation, askAI, clearConversation, isLoading, error } =
     useGroqConversation();
@@ -28,29 +29,28 @@ const GroqAI = () => {
     // Scroll after render
     const timeout = setTimeout(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
-      // Refocus input if conditions are right
+      // Refocus input if conditions are right and shouldFocusInput is true
       if (
         isOpen &&
         !isMinimized &&
         inputRef.current &&
-        document.activeElement !== inputRef.current
+        document.activeElement !== inputRef.current &&
+        shouldFocusInput
       ) {
         inputRef.current.focus();
+        setShouldFocusInput(false); // Reset the flag after focusing
       }
     }, 50); // Delay ensures DOM updates first
-
     return () => clearTimeout(timeout);
-  }, [conversation, isOpen, isMinimized]);
+  }, [conversation, isOpen, isMinimized, shouldFocusInput]); // Add shouldFocusInput as a dependency
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
-
     const message = inputMessage.trim();
     setInputMessage("");
-
     try {
       await askAI(message);
+      setShouldFocusInput(true); // Set the flag to refocus after sending a message
     } catch (error) {
       console.error("Failed to send message:", error);
     }

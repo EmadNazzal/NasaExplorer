@@ -4,7 +4,7 @@ import EpicNasa, { EpicNasaModal } from "./EpicNasa";
 import ImageAndVideo, { ImageAndVideoModal } from "./ImageAndVideo";
 import MarsRoverPhotos, { MarsRoverPhotosModal } from "./MarsRoverPhotos";
 import NearEarth, { NearEarthModal } from "./NearEarth";
-import GroqAI from "./GroqAI";
+// import GroqAI from "./GroqAI";
 
 const FirstPage = () => {
   // const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -242,7 +242,7 @@ const FirstPage = () => {
           />
         )}
       </footer>
-      <GroqAI />
+      {/* <GroqAI /> */}
     </div>
   );
 };

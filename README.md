@@ -19,7 +19,7 @@ A comprehensive web application that utilizes NASA's Open APIs to showcase space
 ![Mars Rover Photos](./assets/screenshots/mars-rover.png)
 *Mars Rover photo gallery with filtering*
 
-![Near Earth Objects](./assets/screenshots/neo-objects.png)
+![Near Earth Objects](./frontend/public/nearEarth.gif)
 *Near Earth Objects data visualization*
 
 ## 🌟 Features

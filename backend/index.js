@@ -1,4 +1,4 @@
-require("dotenv").config();
+// require("dotenv").config();
 const app = require("./app");
 const serverless = require("serverless-http");
 
@@ -11,5 +11,5 @@ if (isLocal) {
   });
 } else {
   console.log("✅ NASA Serverless function loaded for deployment");
-  module.exports.handler = serverless(app);
+  module.exports = serverless(app);
 }

@@ -14,7 +14,12 @@
 //   module.exports = serverless(app);
 // }
 
-const app = require("../app");
-const serverless = require("serverless-http");
+// index.js (used for starting the server)
+require("dotenv").config(); // now it works locally and on Render
+const app = require("./app");
 
-module.exports = serverless(app);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});

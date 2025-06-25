@@ -1,11 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-
 const nasaRoutes = require("./routes/nasaRoutes");
 const groqRoutes = require("./routes/groqRoutes");
 
 const app = express();
-app.options("*", cors());
 
 // Allowed frontend origins
 const allowedOrigins = [
@@ -35,7 +33,7 @@ app.use(
 );
 
 // Handle OPTIONS preflight requests for all routes
-// app.options("*", cors());
+app.options("*", cors());
 
 // Parse JSON bodies
 app.use(express.json());

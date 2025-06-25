@@ -372,9 +372,9 @@ Yeah, None :))
 
 For questions, suggestions, or collaboration opportunities:
 
-- **GitHub**: [Your GitHub Profile](https://github.com/emadnazzal)
+- **GitHub**: [GitHub Profile](https://github.com/emadnazzal)
 - **Email**: emadnazzal95@gmail.com
-- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/emadnazzal95)
+- **LinkedIn**: [LinkedIn Profile](https://linkedin.com/in/emadnazzal95)
 
 ---
 

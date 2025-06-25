@@ -60,7 +60,7 @@ NASAEXPLORER/
 │   ├── package-lock.json
 │   ├── package.json
 │   ├── README.md
-│   └── server.js
+│   └── index.js
 ├── frontend/
 │   ├── node_modules/
 │   ├── public/
@@ -161,13 +161,11 @@ The frontend uses modern React patterns with custom hooks and component composit
    PORT=5000
    NASA_API_KEY=your_nasa_api_key_here
    GROQ_API_KEY=your_groq_api_key_here
-   FRONTEND_URL=http://localhost:3000
    ```
 
    **Frontend `.env`:**
    ```env
    VITE_API_URL=http://localhost:5000
-   VITE_NASA_API_KEY=your_nasa_api_key_here
    ```
 
 ### Running the Application
@@ -195,45 +193,28 @@ The frontend uses modern React patterns with custom hooks and component composit
 
 The application is deployed on Vercel with the following configuration:
 
-1. **Frontend Deployment**: Automatically deployed from the `frontend` directory
-2. **Backend Deployment**: Deployed as Vercel serverless functions
+1. **Frontend Deployment**: Automatically deployed from the `frontend` directory in the github repo, deployment logs visible within github.
 
-**Live Application**: [https://your-nasa-explorer.vercel.app](https://your-nasa-explorer.vercel.app)
+### Render Deployment
+   
+2. **Backend Deployment**: Deployed as Render HTTP server. (FREE TEIR - SHUTS DOWN AUTOMATICALLY AFTER  15 MINS OF INACTIVITY)
+
+**Live Application**: [https://nasa-explorer-client-xi.vercel.app](https://nasa-explorer-client-xi.vercel.app)
 
 ### Deployment Steps
 
 1. **Prepare for Deployment**
-   ```bash
+   ```bash / powershell / cmd / any terminal
    # Build the frontend
    cd frontend
    npm run build
    ```
 
 2. **Vercel Configuration**
-   Create `vercel.json` in the root directory:
-   ```json
-   {
-     "builds": [
-       {
-         "src": "frontend/package.json",
-         "use": "@vercel/static-build"
-       },
-       {
-         "src": "backend/server.js",
-         "use": "@vercel/node"
-       }
-     ],
-     "routes": [
-       {
-         "src": "/api/(.*)",
-         "dest": "backend/server.js"
-       },
-       {
-         "src": "/(.*)",
-         "dest": "frontend/dist/$1"
-       }
-     ]
-   }
+   ``` Following basic initialization steps.
+   CORS policy added in backend to include all vercel frontend links
+   ENV variables added during deployment
+
    ```
 
 3. **Deploy to Vercel**
@@ -254,14 +235,14 @@ The application is deployed on Vercel with the following configuration:
 | **Frontend Design & UI/UX** | ✅ Complete | Modern, space-themed design with smooth animations |
 | **Creativity & Uniqueness** | ✅ Complete | AI integration, animated starfield, unique data presentations |
 | **Backend Architecture** | ✅ Complete | Clean separation of concerns with controllers, services, and routes |
-| **Error Handling** | ✅ Complete | Comprehensive error management on both frontend and backend |
+| **Error Handling** | ✅ Complete | Comprehensive error management on both frontend and backend, THOUGH NOT MODULAR, COULD BE BETTER |
 | **Loading States** | ✅ Complete | Loading indicators and smooth state transitions |
 | **Code Quality** | ✅ Complete | Well-structured, readable code following best practices |
 | **Repository Organization** | ✅ Complete | Clear project structure with proper documentation |
 | **README Documentation** | ✅ Complete | Comprehensive setup and usage instructions |
 | **Deployment** | ✅ Complete | Successfully deployed on Vercel |
 | **User Interactivity** | ✅ Bonus | Filtering, search functionality, and interactive elements |
-| **Responsive Design** | ✅ Bonus | Mobile-first approach with responsive layouts |
+| **Responsive Design** | ✅ Bonus | Mobile-first approach with responsive layouts, bugs arose, fixing |
 | **Performance Optimization** | ✅ Bonus | Optimized loading, caching, and efficient API calls |
 | **AI Features** | ✅ Bonus | GROQ AI integration for enhanced data insights |
 | **Testing** | ❌ Not Implemented | Unit and integration tests not included |
@@ -284,6 +265,11 @@ The application is deployed on Vercel with the following configuration:
 
 ## 🔧 Areas for Improvement
 
+### MicroService Arhitecture
+- We could have created docker containers for both the frontend and the backend
+- Centralized pod management through Kubernetes.
+- More service isolation to make them behave independently
+  
 ### Testing Implementation
 - **Unit Tests**: Add Jest tests for components and utility functions
 - **Integration Tests**: Test API endpoints and data flow
@@ -319,12 +305,16 @@ The application is deployed on Vercel with the following configuration:
 - **Current State**: Basic error handling with user feedback
 - **Enhancement**: Implement exponential backoff retry logic
 
+### CORS Policies
+- **Issue**: When deployed, CORS policies prevented the backend to communicate with the frontend
+- **Fix**: Mitigated code in the app.js to apply CORS through known frontend links as middleware to all available routes.
+
 ## 🛠️ Technologies Used
 
 ### Frontend
 - **React 18**: Modern React with hooks and functional components
 - **Vite**: Fast build tool and development server
-- **CSS3**: Custom styling with animations and responsive design
+- **CSS3**: Custom styling with animations and responsive design through styled components and CSS styled. Some libraries were used for icons like lucide
 - **Axios**: HTTP client for API requests
 
 ### Backend
@@ -338,7 +328,8 @@ The application is deployed on Vercel with the following configuration:
 - **GROQ AI**: AI-powered data enhancement and insights
 
 ### Deployment & Tools
-- **Vercel**: Deployment platform for both frontend and backend
+- **Vercel**: Deployment platform for frontend
+- **Render**: Deployment platform for backend
 - **Git**: Version control system
 - **ESLint**: Code linting and formatting
 
@@ -369,7 +360,7 @@ The application is deployed on Vercel with the following configuration:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Yeah, None :)) 
 
 ## 🙏 Acknowledgments
 
@@ -381,9 +372,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions, suggestions, or collaboration opportunities:
 
-- **GitHub**: [Your GitHub Profile](https://github.com/yourusername)
-- **Email**: your.email@example.com
-- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
+- **GitHub**: [Your GitHub Profile](https://github.com/emadnazzal)
+- **Email**: emadnazzal95@gmail.com
+- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/emadnazzal95)
 
 ---
 

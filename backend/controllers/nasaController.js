@@ -1,8 +1,17 @@
 const nasaService = require("../services/nasaService");
 
 exports.getAPOD = async (req, res) => {
-  const data = await nasaService.fetchAPOD();
-  res.json(data);
+  console.log("Handling APOD request with query:", req.query);
+  try {
+    const data = await nasaService.fetchAPOD(req.query);
+    console.log("Sending APOD response");
+    res.json(data);
+  } catch (error) {
+    console.error("APOD controller error:", error.message);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
 };
 
 exports.getMarsRoverPhotos = async (req, res) => {
@@ -32,11 +41,9 @@ exports.searchLibrary = async (req, res) => {
   } catch (error) {
     console.error("Error in searchLibrary controller:", error);
     // You should send a proper error response to the frontend
-    res
-      .status(500)
-      .json({
-        message: "Failed to fetch NASA media from backend.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Failed to fetch NASA media from backend.",
+      error: error.message,
+    });
   }
 };

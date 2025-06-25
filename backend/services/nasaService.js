@@ -1,10 +1,21 @@
 const axios = require("axios");
 const API_KEY = process.env.NASA_API_KEY;
 
-exports.fetchAPOD = async () => {
-  const url = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
-  const response = await axios.get(url);
-  return response.data;
+exports.fetchAPOD = async (reqQuery = {}) => {
+  const { date } = reqQuery;
+  console.log("Fetching APOD with date:", date);
+  const url = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}${
+    date ? `&date=${date}` : ""
+  }`;
+  try {
+    console.log("Sending request to NASA API:", url);
+    const response = await axios.get(url, { timeout: 10000 }); // 10-second timeout
+    console.log("Received response from NASA API");
+    return response.data;
+  } catch (error) {
+    console.error("NASA API error:", error.message);
+    throw new Error(`Failed to fetch APOD: ${error.message}`);
+  }
 };
 
 exports.fetchMarsRoverPhotos = async (sol) => {
